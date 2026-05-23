@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>دراجون | شحن فري فاير</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family:Tahoma;
+    background:#0d0d0d;
+    color:white;
+    text-align:center;
+}
+
+header{
+    background:linear-gradient(90deg,#ff0000,#7a0000);
+    padding:25px;
+    box-shadow:0 0 20px red;
+}
+
+header h1{
+    font-size:55px;
+    margin:0;
+}
+
+header p{
+    font-size:22px;
+}
+
+.container{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:20px;
+    padding:30px;
+}
+
+.card{
+    background:#1a1a1a;
+    border:2px solid red;
+    border-radius:20px;
+    width:280px;
+    padding:20px;
+    box-shadow:0 0 15px red;
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:scale(1.05);
+}
+
+.price{
+    font-size:30px;
+    color:#00ffff;
+    margin:10px 0;
+}
+
+button{
+    background:red;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:12px;
+    font-size:18px;
+    cursor:pointer;
+    transition:0.3s;
+    margin:5px;
+}
+
+button:hover{
+    background:#cc0000;
+}
+
+.cart{
+    background:#111;
+    margin:20px;
+    padding:20px;
+    border-radius:20px;
+    border:2px solid red;
+    box-shadow:0 0 15px red;
+}
+
+input{
+    width:80%;
+    padding:12px;
+    border-radius:10px;
+    border:none;
+    margin:10px;
+    font-size:18px;
+    text-align:center;
+}
+
+#cartItems{
+    margin:15px 0;
+    font-size:20px;
+}
+
+footer{
+    padding:20px;
+    background:#111;
+    margin-top:30px;
+    color:#aaa;
+}
+
+.deleteBtn{
+    background:#444;
+    font-size:14px;
+    padding:5px 10px;
+}
+
+.deleteBtn:hover{
+    background:#666;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🐉 دراجون</h1>
+    <p>متجر شحن فري فاير 🔥</p>
+</header>
+
+<div class="container">
+
+    <div class="card">
+        <h2>50 💎</h2>
+        <div class="price">30 جنيه</div>
+        <button onclick="addToCart('50 💎',30)">
+            أضف للسلة
+        </button>
+    </div>
+
+    <div class="card">
+        <h2>100 💎</h2>
+        <div class="price">60 جنيه</div>
+        <button onclick="addToCart('100 💎',60)">
+            أضف للسلة
+        </button>
+    </div>
+
+    <div class="card">
+        <h2>210 💎</h2>
+        <div class="price">110 جنيه</div>
+        <button onclick="addToCart('210 💎',110)">
+            أضف للسلة
+        </button>
+    </div>
+
+    <div class="card">
+        <h2>310 💎</h2>
+        <div class="price">170 جنيه</div>
+        <button onclick="addToCart('310 💎',170)">
+            أضف للسلة
+        </button>
+    </div>
+
+    <div class="card">
+        <h2>520 💎</h2>
+        <div class="price">270 جنيه</div>
+        <button onclick="addToCart('520 💎',270)">
+            أضف للسلة
+        </button>
+    </div>
+
+    <div class="card">
+        <h2>1060 💎</h2>
+        <div class="price">550 جنيه</div>
+        <button onclick="addToCart('1060 💎',550)">
+            أضف للسلة
+        </button>
+    </div>
+
+</div>
+
+<div class="cart">
+
+    <h2>🛒 السلة</h2>
+
+    <div id="cartItems">
+        السلة فارغة
+    </div>
+
+    <h3 id="total">
+        الإجمالي: 0 جنيه
+    </h3>
+
+    <input
+    type="text"
+    id="playerID"
+    placeholder="اكتب ID حساب فري فاير">
+
+    <br>
+
+    <button onclick="checkout()">
+        إتمام الطلب
+    </button>
+
+    <button onclick="cancelOrder()">
+        ❌ إلغاء الطلب
+    </button>
+
+</div>
+
+<footer>
+    جميع الحقوق محفوظة © دراجون
+</footer>
+
+<script>
+
+let cart = [];
+let total = 0;
+
+function addToCart(item, price){
+
+    cart.push({item,price});
+
+    total += price;
+
+    updateCart();
+}
+
+function updateCart(){
+
+    let cartDiv =
+    document.getElementById("cartItems");
+
+    cartDiv.innerHTML = "";
+
+    cart.forEach((product,index)=>{
+
+        cartDiv.innerHTML +=
+        `
+        <p>
+        ${product.item}
+        - ${product.price} جنيه
+
+        <button
+        class="deleteBtn"
+        onclick="removeItem(${index})">
+
+        ❌ حذف
+
+        </button>
+
+        </p>
+        `;
+
+    });
+
+    if(cart.length === 0){
+
+        cartDiv.innerHTML =
+        "السلة فارغة";
+
+    }
+
+    document.getElementById("total")
+    .innerText =
+    "الإجمالي: " + total + " جنيه";
+}
+
+function removeItem(index){
+
+    total -= cart[index].price;
+
+    cart.splice(index,1);
+
+    updateCart();
+}
+
+function cancelOrder(){
+
+    cart = [];
+
+    total = 0;
+
+    updateCart();
+
+    document.getElementById("playerID").value = "";
+
+    alert("تم إلغاء الطلب");
+}
+
+function checkout(){
+
+    let id =
+    document.getElementById("playerID").value;
+
+    if(id === ""){
+
+        alert("اكتب ID الحساب");
+        return;
+    }
+
+    if(cart.length === 0){
+
+        alert("السلة فارغة");
+        return;
+    }
+
+    let message =
+    "🔥 طلب جديد من متجر دراجون 🔥%0A%0A";
+
+    cart.forEach((product)=>{
+
+        message +=
+        "• " +
+        product.item +
+        " - " +
+        product.price +
+        " جنيه%0A";
+
+    });
+
+    message +=
+    "%0A🎮 ID: " + id;
+
+    message +=
+    "%0A💰 الإجمالي: " +
+    total +
+    " جنيه";
+
+    window.location.href =
+    "https://wa.me/77473596808?text=" +
+    message;
+}
+
+</script>
+
+</body>
+</html>
